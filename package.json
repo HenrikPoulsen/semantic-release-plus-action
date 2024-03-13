@@ -18,7 +18,7 @@
     "@babel/runtime": "^7.23.2",
     "arrify": "^3.0.0",
     "json5": "^2.2.1",
-    "semantic-release": "^22.0.5"
+    "semantic-release-plus": "^20.0.0"
   },
   "devDependencies": {
     "cod-scripts": "^12.1.0"

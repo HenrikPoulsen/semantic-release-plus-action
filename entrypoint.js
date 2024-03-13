@@ -1,6 +1,6 @@
 import * as childProcess from 'child_process';
 import core from '@actions/core';
-import semanticRelease from 'semantic-release';
+import semanticReleasePlus from 'semantic-release-plus';
 import JSON5 from 'json5';
 import arrify from 'arrify';
 
@@ -92,6 +92,8 @@ async function run() {
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
   const repositoryUrl = core.getInput('repository-url', { required: false });
   const tagFormat = core.getInput('tag-format', { required: false });
+  const skipTag = core.getInput('skip-tag', { required: false });
+  const workingDirectory = core.getInput('working-directory', { required: false });
 
   core.debug(`branch input: ${branch}`);
   core.debug(`branches input: ${branches}`);
@@ -101,8 +103,16 @@ async function run() {
   core.debug(`dry-run input: ${dryRun}`);
   core.debug(`repository-url input: ${repositoryUrl}`);
   core.debug(`tag-format input: ${tagFormat}`);
+  core.debug(`skip-tag input: ${skipTag}`);
+  core.debug(`working-directory input: ${workingDirectory}`);
 
   setGitConfigSafeDirectory();
+
+  // change working directory
+  if (workingDirectory) {
+    core.debug(`Changing working directory to: ${workingDirectory}`);
+    process.chdir(workingDirectory);
+  }
 
   // install additional plugins/configurations
   if (extendsInput) {
@@ -121,6 +131,7 @@ async function run() {
     dryRun,
     repositoryUrl,
     tagFormat,
+    skipTag,
   };
 
   core.debug(`options before cleanup: ${JSON.stringify(options)}`);
@@ -132,7 +143,7 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
-  const result = await semanticRelease(options);
+  const result = await semanticReleasePlus(options);
   if (!result) {
     core.debug('No release published');
 

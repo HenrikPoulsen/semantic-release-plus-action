@@ -1,8 +1,8 @@
-name: 'Semantic Release Action'
+name: 'Semantic Release Plus Action'
 description:
-  'Runs `semantic-release`. Respects .releaserc.js in your repo. Exports version variables for you
-  to use in subsequent actions.'
-author: 'codfish'
+  'Runs `semantic-release-plus`. Respects .releaserc.js in your repo. Exports version variables for
+  you to use in subsequent actions.'
+author: 'HenrikPoulsen'
 branding:
   icon: 'arrow-up-right'
   color: 'orange'
@@ -52,6 +52,15 @@ inputs:
       'DEPRECATED. Will continue to be supported for v1. Use `branches` instead. Previously used in
       semantic-release v15 to set a single branch on which releases should happen.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
+    required: false
+  skip-tag:
+    description:
+      'Prevent tagging of the git commit on release. This is useful for if you want to do other
+      steps without tagging.'
+    required: false
+  working-directory:
+    description:
+      'The working directory where the action should run. Defaults to the root of the repository.'
     required: false
 outputs:
   new-release-published:

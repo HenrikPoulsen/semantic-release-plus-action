@@ -1,7 +1,7 @@
-# semantic-release-action
+# semantic-release-plus-action
 
-GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in
-your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
+GitHub Action for running `semantic-release-plus`. Respects any semantic-release configuration file
+in your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
 for you to use in subsequent actions containing version numbers.
 
 > **Note**: `v3` of this action uses semantic-release v22 & node v20.9. `v2` uses semantic-release
