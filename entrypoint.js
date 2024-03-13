@@ -1,6 +1,5 @@
 import * as childProcess from 'child_process';
 import core from '@actions/core';
-import semanticReleasePlus from 'semantic-release-plus';
 import JSON5 from 'json5';
 import arrify from 'arrify';
 
@@ -108,12 +107,6 @@ async function run() {
 
   setGitConfigSafeDirectory();
 
-  // change working directory
-  if (workingDirectory) {
-    core.debug(`Changing working directory to: ${workingDirectory}`);
-    process.chdir(workingDirectory);
-  }
-
   // install additional plugins/configurations
   if (extendsInput) {
     additionalPackages.push(...arrify(extendsInput));
@@ -143,7 +136,14 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
-  const result = await semanticReleasePlus(options);
+  // change working directory
+  if (workingDirectory) {
+    core.debug(`Changing working directory to: ${workingDirectory}`);
+    process.chdir(workingDirectory);
+  }
+
+  const semanticReleasePlus = await import('semantic-release-plus');
+  const result = await semanticReleasePlus.default(options);
   if (!result) {
     core.debug('No release published');
 
