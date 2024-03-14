@@ -113,16 +113,16 @@ See [action.yml](action.yml).
 ```yml
 steps:
   # Recommended: Docker image digest from GitHub Container Registry (best for speed & security)
-  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
+  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action@sha256:c9ce01e426539308162d569a21a1f742345ff1052d5c3f83a2103bf4181d4585
 
   # Major version of a release
   - uses: HenrikPoulsen/semantic-release-plus-action@v1
 
   # Minor version of a release
-  - uses: HenrikPoulsen/semantic-release-plus-action@v1.0.0
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1.0.1
 
   # Specific commit
-  - uses: HenrikPoulsen/semantic-release-plus-action@f53f27643fe665489a375e49e86b921f36ba79ca
+  - uses: HenrikPoulsen/semantic-release-plus-action@7393ae8d641c6701006b5b60ef2f88e138a3f236
 
   # Git branch
   - uses: HenrikPoulsen/semantic-release-plus-action@main
@@ -152,7 +152,7 @@ steps:
 ```yml
 steps:
   # Docker image digest from GitHub Container Registry
-  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
+  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action@sha256:c9ce01e426539308162d569a21a1f742345ff1052d5c3f83a2103bf4181d4585
 ```
 
 Where `<digest>` is any
