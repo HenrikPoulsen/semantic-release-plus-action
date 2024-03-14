@@ -4,9 +4,17 @@ on:
   workflow_dispatch:
   pull_request:
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - uses: actions/checkout@v4
@@ -66,11 +74,12 @@ jobs:
         env:
           OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
 
-      - name: docker login
-        run: |
-          echo "$GCR_TOKEN" | docker login ghcr.io -u HenrikPoulsen --password-stdin
-        env:
-          GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: build and push branch docker image to GCR
