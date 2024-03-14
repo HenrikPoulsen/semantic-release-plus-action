@@ -33,7 +33,7 @@ for you to use in subsequent actions containing version numbers.
 steps:
   - uses: actions/checkout@v3
 
-  - uses: codfish/semantic-release-action@v3
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -46,7 +46,7 @@ steps:
   - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v3
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,7 +70,7 @@ steps:
   - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v3
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -91,7 +91,7 @@ steps:
 steps:
   - uses: actions/checkout@v3
 
-  - uses: codfish/semantic-release-action@v3
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -113,19 +113,19 @@ See [action.yml](action.yml).
 ```yml
 steps:
   # Recommended: Docker image digest from GitHub Container Registry (best for speed & security)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
+  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
 
   # Major version of a release
-  - uses: codfish/semantic-release-action@v3
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1
 
   # Minor version of a release
-  - uses: codfish/semantic-release-action@v3.0.1
+  - uses: HenrikPoulsen/semantic-release-plus-action@v1.0.0
 
   # Specific commit
-  - uses: codfish/semantic-release-action@ee5b4afec556c3bf8b9f0b9cd542aade9e486033
+  - uses: HenrikPoulsen/semantic-release-plus-action@f53f27643fe665489a375e49e86b921f36ba79ca
 
   # Git branch
-  - uses: codfish/semantic-release-action@main
+  - uses: HenrikPoulsen/semantic-release-plus-action@main
 ```
 
 > [!NOTE]
@@ -137,10 +137,10 @@ steps:
 ```yml
 steps:
   # GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v3
+  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action:v1
 
   # Dockerhub
-  - uses: docker://codfish/semantic-release-action:v3
+  - uses: docker://HenrikPoulsen/semantic-release-plus-action:v1
 ```
 
 > [!TIP]
@@ -152,20 +152,20 @@ steps:
 ```yml
 steps:
   # Docker image digest from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
+  - uses: docker://ghcr.io/henrikpoulsen/semantic-release-plus-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
 ```
 
 Where `<digest>` is any
-[docker image digest you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action).
+[docker image digest you want here](https://github.com/users/HenrikPoulsen/packages/container/package/semantic-release-plus-action).
 
 ## Why
 
-It's fairly easy to run `semantic-release` as a "host action," aka something that runs directly on
-the VM.
+It's fairly easy to run `semantic-release-plus` as a "host action," aka something that runs directly
+on the VM.
 
 ```yml
 steps:
-  - run: npx semantic-release
+  - run: npx semantic-release-plus
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -175,15 +175,15 @@ If you're just publishing a node package, then this could still work well for yo
 found with this is when I was in projects where I had subsequent steps/actions in which I wanted to
 know whether a new version was cut.
 
-> **Use Case:** For instance, in an application where I'm using `semantic-release` to manage GitHub
-> releases, but also building and pushing docker images. Dockerhub has a
+> **Use Case:** For instance, in an application where I'm using `semantic-release-plus` to manage
+> GitHub releases, but also building and pushing docker images. Dockerhub has a
 > [nice GitHub integration](https://docs.docker.com/docker-hub/builds/) to handle this for us, but
 > some other registries do not. If I need to cut a new release, then update a docker registry by
 > adding a new tagged build, I'll want to run `semantic-release` and then build a docker image, tag
 > it with a version and push it up. In my case I like to push up tags for `latest`, the semver (i.e.
 > `v1.8.3`), and just the major the version (i.e. `v1`).
 
-I want to know 1) if semantic-release cut a new version and 2) what the version is.
+I want to know 1) if semantic-release-plus cut a new version and 2) what the version is.
 
 There's a number of ways to handle this, but the most elegant way I found to do it was to abstract
 it into it's own custom action. It abstracts away whatever logic you need to figure out what that
@@ -194,14 +194,14 @@ I can easily leverage it across any project.
 
 ## Configuration
 
-You can pass in `semantic-release` configuration options via GitHub Action inputs using `with`.
+You can pass in `semantic-release-plus` configuration options via GitHub Action inputs using `with`.
 
 It's important to note, **NONE** of these inputs are required. Semantic release has a default
 configuration that it will use if you don't provide any.
 
 Also of note, if you'd like to override the default configuration and you'd rather not use the
 inputs here, the action will automatically use any
-[`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
+[`semantic-release-plus` configuration](https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
 defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
 
 > [!NOTE]
@@ -212,12 +212,14 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 | Input Variable        | Type                        | Description                                                                                                                                                                                                                                                     | Default                                                                                                                                       |
 | --------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `branches`            | `Array`, `String`, `Object` | The branches on which releases should happen. Our default mimic's semantic-release's, with one major inclusion: the `main` branch.                                                                                                                              | `['+([0-9])?(.{+([0-9]),x}).x', 'master', 'main', 'next', 'next-major', {name: 'beta', prerelease: true}, {name: 'alpha', prerelease: true}]` |
-| `plugins`             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#plugins)                      |
-| `extends`             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends)                      |
+| `plugins`             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        | [Semantic default](https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#plugins)                 |
+| `extends`             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             | [Semantic default](https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#extends)                 |
 | `additional-packages` | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. | `[]`                                                                                                                                          |
-| `dry-run`             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#dryrun)                       |
-| `repository-url`      | `String`                    | The git repository URL                                                                                                                                                                                                                                          | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl)                |
-| `tag-format`          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat)                    |
+| `dry-run`             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       | [Semantic default](https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#dryrun)                  |
+| `repository-url`      | `String`                    | The git repository URL                                                                                                                                                                                                                                          | [Semantic default](https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl)           |
+| `tag-format`          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               | [Semantic default](https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#tagformat)               |
+| `skip-tag`            | `Boolean`                   | Skip tagging the release.                                                                                                                                                                                                                                       | https://github.com/semantic-release-plus/semantic-release/blob/master/docs/usage/configuration.md#tagformat                                   |
+| `working-direction`   | `String`                    | The working directory from which the `semantic-release-plus` command is run.                                                                                                                                                                                    |                                                                                                                                               |
 
 > [!NOTE]
 >
