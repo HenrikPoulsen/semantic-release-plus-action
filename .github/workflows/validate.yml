@@ -84,5 +84,5 @@ jobs:
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: build and push branch docker image to GCR
         run: |
-          docker build -t ghcr.io/HenrikPoulsen/semantic-release-plus-action:$GITHUB_HEAD_REF .
-          docker push ghcr.io/HenrikPoulsen/semantic-release-plus-action:$GITHUB_HEAD_REF
+          docker build -t ghcr.io/henrikpoulsen/semantic-release-plus-action:$GITHUB_HEAD_REF .
+          docker push ghcr.io/henrikpoulsen/semantic-release-plus-action:$GITHUB_HEAD_REF
