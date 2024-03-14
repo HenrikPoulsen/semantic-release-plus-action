@@ -2,7 +2,7 @@
 
 <!-- Please link to the github issue here. -->
 
-https://github.com/codfish/semantic-release-action/issues/**NUMBER**
+https://github.com/HenrikPoulsen/semantic-release-plus-action/issues/**NUMBER**
 
 ### Description
 
